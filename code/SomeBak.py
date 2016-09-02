@@ -17,6 +17,7 @@ class Program:
 		targetLocation = self.args[0]
 		# ToDo: canonise path
 		for sourceFile in self.fileArtefacts:
+			os.makedirs(sourceFile.targetPath, exist_ok = True)
 			shutil.copy2(sourceFile.fullPath, os.path.join(targetLocation, sourceFile.targetPath))
 
 
