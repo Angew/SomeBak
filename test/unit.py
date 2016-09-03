@@ -77,5 +77,39 @@ class TestCopyToNonExistent(TestCopy, TestCase):
 
 
 
+class TestCommandLineArg_OutputDir(TestCase):
+	def testOmitted(self):
+		program = SomeBak.Program(['SomeBak'])
+		self.assertEqual(program.targetLocation, os.path.abspath('.'))
+
+	def testAbsolutePath(self):
+		for arg in ('-o', '--output'):
+			with self.subTest(option = arg):
+				program = SomeBak.Program(['SomeBak', arg, os.path.abspath('dir')])
+				self.assertEqual(program.targetLocation, os.path.abspath('dir'))
+
+	def testRelativePath(self):
+		for arg in ('-o', '--output'):
+			with self.subTest(option = arg):
+				program = SomeBak.Program(['SomeBak', arg, os.path.join('dir', 'sub')])
+				self.assertEqual(program.targetLocation, os.path.abspath(os.path.join('dir', 'sub')))
+
+
+
+class TestCommandLineArg_ConfigDir(TestCase):
+	def testOmitted(self):
+		program = SomeBak.Program(['SomeBak'])
+		self.assertEqual(program.configDir, os.path.abspath('.'))
+
+	def testAbsolutePath(self):
+		program = SomeBak.Program(['SomeBak', os.path.abspath('dir')])
+		self.assertEqual(program.configDir, os.path.abspath('dir'))
+
+	def testRelativePath(self):
+		program = SomeBak.Program(['SomeBak', os.path.join('dir', 'sub')])
+		self.assertEqual(program.configDir, os.path.abspath(os.path.join('dir', 'sub')))
+
+
+
 if __name__ == '__main__':
 	unittest.main()
