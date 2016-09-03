@@ -10,15 +10,17 @@ import sys
 
 
 class Program:
-	def __init__(self, args):
+	def __init__(self, args = ['SomeBak']):
 		self.args = args[1:]
+		try:
+			self.targetLocation = os.path.abspath(self.args[0])
+		except IndexError:
+			self.targetLocation = os.path.abspath('.')
 
 	def run(self):
-		targetLocation = self.args[0]
-		# ToDo: canonise path
 		for sourceFile in self.fileArtefacts:
 			os.makedirs(sourceFile.targetPath, exist_ok = True)
-			shutil.copy2(sourceFile.fullPath, os.path.join(targetLocation, sourceFile.targetPath))
+			shutil.copy2(sourceFile.fullPath, os.path.join(self.targetLocation, sourceFile.targetPath))
 
 
 

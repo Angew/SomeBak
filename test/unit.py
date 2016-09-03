@@ -32,8 +32,8 @@ class MockArtefact:
 class TestCopy:
 	def setupProgram(self, targetDir):
 		self.targetDir = targetDir
-		self.program = program = SomeBak.Program([''])
-		program.args = [targetDir]
+		self.program = program = SomeBak.Program()
+		program.targetLocation = targetDir
 		program.fileArtefacts = [
 			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'file1'), targetPath = targetDir),
 			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'subdir', 'file2'), targetPath = os.path.join(targetDir, 'subdir')),
