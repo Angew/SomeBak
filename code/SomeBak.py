@@ -12,8 +12,7 @@ import sys
 
 class Program:
 	def __init__(self, args = ['SomeBak']):
-		self.parseArgs(args)
-		self.postprocessOptions()
+		self.setOptions(self.parseArgs(args))
 
 
 	def parseArgs(self, args):
@@ -34,12 +33,12 @@ class Program:
 			nargs = '?',
 			default = '.'
 		)
-		parser.parse_args(args[1:], self)
+		return parser.parse_args(args[1:])
 
 
-	def postprocessOptions(self):
-		self.targetLocation = os.path.abspath(self.targetLocation)
-		self.configDir = os.path.abspath(self.configDir)
+	def setOptions(self, options):
+		self.targetLocation = os.path.abspath(options.targetLocation)
+		self.configDir = os.path.abspath(options.configDir)
 
 
 	def run(self):
