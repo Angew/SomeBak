@@ -20,7 +20,9 @@ class Program:
 	def run(self):
 		for sourceFile in self.fileArtefacts:
 			os.makedirs(sourceFile.targetPath, exist_ok = True)
-			shutil.copy2(sourceFile.fullPath, os.path.join(self.targetLocation, sourceFile.targetPath))
+			targetFullPath = os.path.join(self.targetLocation, sourceFile.targetPath)
+			if not os.path.lexists(targetFullPath):
+				shutil.copy2(sourceFile.fullPath, targetFullPath)
 
 
 
