@@ -21,7 +21,7 @@ class Program:
 		for sourceFile in self.fileArtefacts:
 			os.makedirs(sourceFile.targetPath, exist_ok = True)
 			targetFullPath = os.path.join(self.targetLocation, sourceFile.targetPath)
-			if not os.path.lexists(targetFullPath):
+			if not os.path.lexists(os.path.join(targetFullPath, os.path.basename(sourceFile.fullPath))):
 				shutil.copy2(sourceFile.fullPath, targetFullPath)
 
 
