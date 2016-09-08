@@ -30,27 +30,31 @@ class MockArtefact:
 
 
 class TestCopy:
+	groundTruth_plainFile = 'File1'
+	groundTruth_subdirFile = 'File2'
+	groundTruth_relocatedFile = 'File3'
+
 	def setupProgram(self, targetDir):
 		self.targetDir = targetDir
 		self.program = program = SomeBak.Program()
 		program.targetLocation = targetDir
 		program.fileArtefacts = [
-			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'file1'), targetPath = targetDir),
-			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'subdir', 'file2'), targetPath = os.path.join(targetDir, 'subdir')),
-			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'file3'), targetPath = os.path.join(targetDir, 'subdir'))
+			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'copyToEmpty', 'file1'), targetPath = targetDir),
+			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'copyToEmpty', 'subdir', 'file2'), targetPath = os.path.join(targetDir, 'subdir')),
+			MockArtefact(fullPath = os.path.join(testRootPath, 'data', 'copyToEmpty', 'file3'), targetPath = os.path.join(targetDir, 'subdir'))
 		]
 
 	def test_plainFile(self):
 		self.program.run()
-		self.assertFileContains(os.path.join(self.targetDir, 'file1'), 'File1')
+		self.assertFileContains(os.path.join(self.targetDir, 'file1'), self.groundTruth_plainFile)
 
 	def test_subdirFile(self):
 		self.program.run()
-		self.assertFileContains(os.path.join(self.targetDir, 'subdir', 'file2'), 'File2')
+		self.assertFileContains(os.path.join(self.targetDir, 'subdir', 'file2'), self.groundTruth_subdirFile)
 
 	def test_relocatedFile(self):
 		self.program.run()
-		self.assertFileContains(os.path.join(self.targetDir, 'subdir', 'file3'), 'File3')
+		self.assertFileContains(os.path.join(self.targetDir, 'subdir', 'file3'), self.groundTruth_relocatedFile)
 
 
 
@@ -74,6 +78,21 @@ class TestCopyToNonExistent(TestCopy, TestCase):
 
 	def deleteTargetDir(self):
 		shutil.rmtree(self.targetDir, ignore_errors = True)
+
+
+
+class TestCopyOnce(TestCopy, TestCase):
+	def setUp(self):
+		self.targetDirObject = tempfile.TemporaryDirectory()
+		targetDirPath = os.path.join(self.targetDirObject.name, 'root')
+		shutil.copytree(src = os.path.join(testRootPath, 'data', 'copyOnce'), dst = targetDirPath)
+		self.setupProgram(targetDirPath)
+		self.groundTruth_plainFile = 'Original1'
+		self.groundTruth_subdirFile = 'Original2'
+		self.groundTruth_relocatedFile = 'Original3'
+
+	def tearDown(self):
+		self.targetDirObject.cleanup()
 
 
 
