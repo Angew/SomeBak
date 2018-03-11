@@ -1,6 +1,12 @@
 #pragma once
 
-#include "boost/range/iterator_range.hpp"
+#include "FileArtefact.hxx"
+
+#include "boost/iterator/iterator_categories.hpp"
+
+#include "boost/range/any_range.hpp"
+
+#include <vector>
 
 
 namespace SomeBak
@@ -8,12 +14,16 @@ namespace SomeBak
 
 class DirectoryRules
 {
+public:
+	std::vector<FileArtefact> listFileArtefacts() const;
 };
+
+
 
 class RuleDatabase
 {
 public:
-	virtual boost::iterator_range<const DirectoryRules*> getDirectories() const = 0;
+	boost::any_range<const DirectoryRules, boost::forward_traversal_tag> getDirectories() const;
 };
 
 }	// namespace SomeBak

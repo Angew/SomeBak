@@ -2,6 +2,7 @@
 
 
 #include "Archive.hh"
+#include "ArchiveDatabase.hh"
 #include "RuleDatabase.hh"
 
 
@@ -10,10 +11,10 @@ namespace SomeBak
 
 class Program
 {
-	void compileIntoArchive(const DirectoryRules &dir, Archive &archive);
+	void compileIntoArchive(const DirectoryRules &dir, const ArchiveDatabase &archiveDatabase, Archive &archive);
 
 public:
-	void compileArchive(const RuleDatabase &rules);
+	void compileArchive(const RuleDatabase &rules, const ArchiveDatabase &archiveDatabase);
 };
 
 }	// namespace SomeBak

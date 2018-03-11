@@ -1,14 +1,15 @@
 #include "common.hpp"
 
+#include "ArchiveDatabase.hpp"
 #include "RuleDatabase.hpp"
 #include "Program.hpp"
 
 
-class MockRulesDatabase : public SomeBak::RuleDatabase
+class MockArchiveDatabase : public SomeBak::ArchiveDatabase
 {
-	boost::iterator_range<const SomeBak::DirectoryRules*> getDirectories() const override
+	bool needsArchiving(const SomeBak::FileArtefact &/*artefact*/) const override
 	{
-		return { nullptr, nullptr };
+		return true;
 	}
 };
 
@@ -18,7 +19,8 @@ int main()
 {
 	SomeBak::Program program;
 
-	MockRulesDatabase rulesDatabase;
+	MockArchiveDatabase archiveDatabase;
+	SomeBak::RuleDatabase ruleDatabase;
 
-	program.compileArchive(rulesDatabase);
+	program.compileArchive(ruleDatabase, archiveDatabase);
 }
