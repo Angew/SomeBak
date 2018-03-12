@@ -5,14 +5,21 @@
 #include "Archive.hpp"
 #include "ArchiveDatabase.hpp"
 #include "RuleDatabase.hpp"
+#include "Utility.hpp"
+
+#include <QDir>
+
+#include <boost/range/adaptor/transformed.hpp>
 
 
 namespace SomeBak
 {
 
-void Program::compileIntoArchive(const DirectoryRules &dir, const ArchiveDatabase &archiveDatabase, Archive &archive)
+void Program::compileIntoArchive(const DirectoryRules &dirRules, const ArchiveDatabase &archiveDatabase, Archive &archive)
 {
-	for (const auto& artefact : dir.listFileArtefacts()) {
+	QDir dir(QString::fromStdString(dirRules.getSourcePath()));
+	const auto entries = dir.entryList(QDir::Files);
+	for (const auto& artefact : dirRules.listFileArtefacts(entries | boost::adaptors::transformed(stdStringFromQString))) {
 		if (archiveDatabase.needsArchiving(artefact)) {
 			archive.add(artefact);
 		}

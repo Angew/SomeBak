@@ -11,7 +11,7 @@ namespace SomeBak
 
 class Program
 {
-	void compileIntoArchive(const DirectoryRules &dir, const ArchiveDatabase &archiveDatabase, Archive &archive);
+	void compileIntoArchive(const DirectoryRules &directoryRules, const ArchiveDatabase &archiveDatabase, Archive &archive);
 
 public:
 	void compileArchive(const RuleDatabase &rules, const ArchiveDatabase &archiveDatabase);

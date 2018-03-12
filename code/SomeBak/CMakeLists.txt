@@ -9,6 +9,7 @@ add_executable(SomeBak
 	src/FileArtefact.cpp
 	src/Program.cpp
 	src/RuleDatabase.cpp
+	src/Utility.cpp
 )
 TargetAddHeaders(SomeBak
 	src/Archive
@@ -16,6 +17,7 @@ TargetAddHeaders(SomeBak
 	src/FileArtefact
 	src/Program
 	src/RuleDatabase
+	src/Utility
 )
 target_include_directories(SomeBak PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(SomeBak PRIVATE Qt4::QtCore)
