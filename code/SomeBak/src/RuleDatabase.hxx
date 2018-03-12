@@ -6,20 +6,62 @@
 
 #include <boost/range/any_range.hpp>
 
+#include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 
 namespace SomeBak
 {
 
-class DirectoryRules
+class FileRule
 {
 public:
-	std::string getSourcePath() const;
+	enum class Type
+	{
+		Including,
+		Excluding
+	};
 
-  template <class T_FilenameRange>
-	std::vector<FileArtefact> listFileArtefacts(const T_FilenameRange &filenames) const;
+private:
+	Type mType;
+
+protected:
+	FileRule(Type type) : mType{type}
+	{}
+
+public:
+	static std::unique_ptr<FileRule> createGlobRule(Type type, std::string pattern);
+
+	virtual bool matchesName(std::string_view filename) const = 0;
+
+	virtual bool isIncluding() const
+	{ return mType == Type::Including; }
+};
+
+
+class DirectoryRules
+{
+	std::string mSourcePath;
+	std::vector<std::unique_ptr<FileRule>> mFileRules;
+
+public:
+	std::string getSourcePath() const
+	{ return mSourcePath; }
+
+	template <class T_FilenameRange>
+	std::vector<FileArtefact> listFileArtefacts(const T_FilenameRange &filenames) const
+	{
+		std::vector<FileArtefact> artefacts;
+		for (const auto& filename : filenames) {
+			if (nameMatchesRules(filename)) {
+				artefacts.emplace_back(filename);
+			}
+		}
+	}
+
+	bool nameMatchesRules(std::string_view filename) const;
 };
 
 

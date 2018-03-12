@@ -21,3 +21,4 @@ TargetAddHeaders(SomeBak
 )
 target_include_directories(SomeBak PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(SomeBak PRIVATE Qt4::QtCore)
+target_compile_features(SomeBak PRIVATE cxx_std_17)
