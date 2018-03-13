@@ -44,6 +44,7 @@ public:
 class DirectoryRules
 {
 	std::string mSourcePath;
+	std::string mTargetPath;
 	std::vector<std::unique_ptr<FileRule>> mFileRules;
 
 public:
@@ -56,9 +57,10 @@ public:
 		std::vector<FileArtefact> artefacts;
 		for (const auto& filename : filenames) {
 			if (nameMatchesRules(filename)) {
-				artefacts.emplace_back(filename);
+				artefacts.emplace_back(combinePath(mSourcePath, filename), combinePath(mTargetPath, filename));
 			}
 		}
+		return artefacts;
 	}
 
 	bool nameMatchesRules(std::string_view filename) const;

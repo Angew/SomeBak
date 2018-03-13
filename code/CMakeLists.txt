@@ -11,4 +11,6 @@ function(TargetAddHeaders Target)
 	endforeach()
 endfunction()
 
+add_definitions(-DCXXSTD_NO_FOLD_EXPRESSIONS)	# ToDo: use try_compile and a configured header instead
+
 add_subdirectory(SomeBak)

@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QStringList>
 
 #include <cassert>
 #include <limits>
@@ -64,6 +65,18 @@ inline std::string stdStringFromQString(const QString &src)
 {
 	auto data = src.toUtf8();
 	return { data.data(), size_cast<size_t>(data.size()) };
+}
+//--------------------------------------------------------------------------------------------------
+template <class... T>
+std::string combinePath(const T&... arg)
+{
+#ifdef CXXSTD_NO_FOLD_EXPRESSIONS
+	QStringList list;
+	int fold[] = { 0, (list << qStringFromStdString(arg), 0)... };
+#else
+	auto list = QStringList{} << ... << qStringFromStdString(arg);
+#endif
+	return stdStringFromQString(list.join("/"));
 }
 
 } //namespace SomeBak
